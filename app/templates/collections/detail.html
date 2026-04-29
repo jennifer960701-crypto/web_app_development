@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-folder2-open"></i> 收藏夾：{{ collection.name }}</h2>
+    <a href="{{ url_for('collections.index') }}" class="btn btn-outline-secondary">回清單列表</a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+            {% for recipe in recipes %}
+            <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+                <div>
+                    <h5 class="mb-1"><a href="{{ url_for('recipes.detail', id=recipe.id) }}" class="text-decoration-none">{{ recipe.title }}</a></h5>
+                    <small class="text-muted"><i class="bi bi-clock"></i> {{ recipe.cooking_time or '-' }} 分鐘</small>
+                </div>
+                <!-- MVP 暫不實作從收藏夾移除食譜的按鈕，保留未來擴充 -->
+            </li>
+            {% else %}
+            <li class="list-group-item text-center py-4 text-muted">這個清單裡面還沒有食譜喔。</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center bg-white">
+        <h2 class="mb-0">{{ recipe.title }}</h2>
+        <div>
+            <a href="{{ url_for('recipes.edit', id=recipe.id) }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-pencil"></i> 編輯</a>
+            <form action="{{ url_for('recipes.delete', id=recipe.id) }}" method="POST" class="d-inline" onsubmit="return confirm('確定要刪除這份食譜嗎？');">
+                <button type="submit" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i> 刪除</button>
+            </form>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <strong><i class="bi bi-clock"></i> 烹飪時間：</strong> {{ recipe.cooking_time or '未設定' }} 分鐘
+            </div>
+            <div class="col-sm-6 text-end text-muted small">
+                最後更新：{{ recipe.updated_at }}
+            </div>
+        </div>
+        
+        {% if recipe.source_url %}
+        <p><strong><i class="bi bi-link-45deg"></i> 來源：</strong> <a href="{{ recipe.source_url }}" target="_blank">{{ recipe.source_url }}</a></p>
+        {% endif %}
+
+        <hr>
+        <h4>食材清單</h4>
+        <p style="white-space: pre-wrap;">{{ recipe.ingredients or '尚未建立食材清單' }}</p>
+        
+        <hr>
+        <h4>料理步驟</h4>
+        <p style="white-space: pre-wrap;">{{ recipe.instructions or '尚未建立步驟' }}</p>
+        
+        {% if recipe.notes %}
+        <hr>
+        <h4>個人筆記</h4>
+        <div class="alert alert-secondary">
+            <p style="white-space: pre-wrap;" class="mb-0">{{ recipe.notes }}</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+<a href="{{ url_for('recipes.index') }}" class="btn btn-link"><i class="bi bi-arrow-left"></i> 回到列表</a>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <!-- 分類管理 -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h4 class="mb-0">主分類管理</h4>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('categories.create') }}" method="POST" class="mb-4 d-flex">
+                    <input type="text" name="name" class="form-control me-2" placeholder="新分類名稱" required>
+                    <button type="submit" class="btn btn-primary text-nowrap">新增分類</button>
+                </form>
+                
+                <ul class="list-group">
+                    {% for cat in categories %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ cat.name }}
+                        <form action="{{ url_for('categories.delete', id=cat.id) }}" method="POST" onsubmit="return confirm('確定刪除此分類？');">
+                            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                        </form>
+                    </li>
+                    {% else %}
+                    <li class="list-group-item text-muted text-center">目前沒有分類</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 標籤管理 -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h4 class="mb-0">標籤管理</h4>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('categories.create_tag') }}" method="POST" class="mb-4 d-flex">
+                    <input type="text" name="name" class="form-control me-2" placeholder="新標籤名稱" required>
+                    <button type="submit" class="btn btn-secondary text-nowrap">新增標籤</button>
+                </form>
+                
+                <ul class="list-group">
+                    {% for tag in tags %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ tag.name }}
+                        <form action="{{ url_for('categories.delete_tag', id=tag.id) }}" method="POST" onsubmit="return confirm('確定刪除此標籤？');">
+                            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                        </form>
+                    </li>
+                    {% else %}
+                    <li class="list-group-item text-muted text-center">目前沒有標籤</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

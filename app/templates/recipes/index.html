@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h2>所有食譜</h2>
+    </div>
+    <div class="col-md-4">
+        <form action="{{ url_for('recipes.index') }}" method="GET" class="d-flex">
+            <input type="text" name="q" class="form-control me-2" placeholder="搜尋標題或食材..." value="{{ request.args.get('q', '') }}">
+            {% if categories %}
+            <select name="category" class="form-select me-2" style="max-width: 120px;">
+                <option value="">全部分類</option>
+                {% for cat in categories %}
+                <option value="{{ cat.id }}" {% if request.args.get('category') == cat.id|string %}selected{% endif %}>{{ cat.name }}</option>
+                {% endfor %}
+            </select>
+            {% endif %}
+            <button type="submit" class="btn btn-outline-secondary">搜尋</button>
+        </form>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for recipe in recipes %}
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ recipe.title }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">
+                    <i class="bi bi-clock"></i> {{ recipe.cooking_time or '-' }} 分鐘
+                </h6>
+                <p class="card-text text-truncate">{{ recipe.ingredients }}</p>
+                <a href="{{ url_for('recipes.detail', id=recipe.id) }}" class="btn btn-outline-primary btn-sm">查看詳情</a>
+            </div>
+            <div class="card-footer text-muted small">
+                建立於: {{ recipe.created_at[:10] }}
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12 text-center py-5">
+        <p class="text-muted">找不到任何食譜，開始新增第一份食譜吧！</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

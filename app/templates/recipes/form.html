@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h3 class="mb-0">{{ '編輯食譜' if recipe else '新增食譜' }}</h3>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('recipes.update', id=recipe.id) if recipe else url_for('recipes.create') }}" method="POST">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">食譜標題 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="title" name="title" value="{{ recipe.title if recipe else '' }}" required>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="category_id" class="form-label">分類</label>
+                            <select class="form-select" id="category_id" name="category_id">
+                                <option value="">無</option>
+                                {% for cat in categories %}
+                                <option value="{{ cat.id }}" {% if recipe and recipe.category_id == cat.id %}selected{% endif %}>{{ cat.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="cooking_time" class="form-label">烹飪時間 (分鐘)</label>
+                            <input type="number" class="form-control" id="cooking_time" name="cooking_time" value="{{ recipe.cooking_time if recipe else '' }}">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="source_url" class="form-label">來源網址</label>
+                        <input type="url" class="form-control" id="source_url" name="source_url" value="{{ recipe.source_url if recipe else '' }}" placeholder="https://...">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="ingredients" class="form-label">食材清單</label>
+                        <textarea class="form-control" id="ingredients" name="ingredients" rows="4">{{ recipe.ingredients if recipe else '' }}</textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="instructions" class="form-label">料理步驟</label>
+                        <textarea class="form-control" id="instructions" name="instructions" rows="6">{{ recipe.instructions if recipe else '' }}</textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="notes" class="form-label">個人心得與筆記</label>
+                        <textarea class="form-control" id="notes" name="notes" rows="3">{{ recipe.notes if recipe else '' }}</textarea>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('recipes.detail', id=recipe.id) if recipe else url_for('recipes.index') }}" class="btn btn-light">取消</a>
+                        <button type="submit" class="btn btn-primary">儲存食譜</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
